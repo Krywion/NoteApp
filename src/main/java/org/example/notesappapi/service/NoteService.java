@@ -14,12 +14,17 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
-    public void save(String title, String content) {
+    public boolean add(String title, String content) {
+        if (title == null || title.isEmpty() || content == null || content.isEmpty()) {
+            return false;
+        }
         Note note = new Note();
         note.setTitle(title);
         note.setContent(content);
         noteRepository.save(note);
+        return true;
     }
+
 
     public List<Note> findAll() {
         return noteRepository.findAll();
@@ -29,9 +34,27 @@ public class NoteService {
         return noteRepository.findById(id).orElse(null);
     }
 
-    public void deleteById(Long id) {
-        noteRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        if(noteRepository.existsById(id)) {
+            noteRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 
+    public boolean update(Long id, String title, String content) {
+        Note note = noteRepository.findById(id).orElse(null);
+        if (note != null) {
+            note.setId(id);
+            note.setTitle(title);
+            note.setContent(content);
+            noteRepository.save(note);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
