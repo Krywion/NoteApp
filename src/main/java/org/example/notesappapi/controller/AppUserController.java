@@ -21,11 +21,11 @@ public class AppUserController {
     }
 
 
-
-
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>> getUsers() {
         return new ResponseEntity<>(appUserService.getUsers(), HttpStatus.OK);
     }
+
+
 
 }

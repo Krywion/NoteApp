@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -20,14 +21,14 @@ public class NoteController {
     }
 
     @GetMapping("/notes")
-    public ResponseEntity<List<Note>> getNotes() {
-        return new ResponseEntity<>(noteService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<Note>> getNotes(Principal principal) {
+        return new ResponseEntity<>(noteService.findAll(principal.getName()), HttpStatus.OK);
     }
 
     @PostMapping("/add-note")
-    public ResponseEntity<String> addNote(@RequestBody Map<String, String> noteData) {
-        if (noteService.add(noteData.get("title"), noteData.get("content"))) {
-            return new ResponseEntity<>("Note added successfully", HttpStatus.CREATED);
+    public ResponseEntity<String> addNote(@RequestBody Map<String, String> noteData, Principal principal) {
+        if (noteService.add(noteData.get("title"), noteData.get("content"), principal.getName())) {
+            return new ResponseEntity<>("Note added successfully to user: " + principal.getName() , HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("Error adding note", HttpStatus.INTERNAL_SERVER_ERROR);
         }

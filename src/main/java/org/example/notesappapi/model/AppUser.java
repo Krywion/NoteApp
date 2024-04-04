@@ -14,12 +14,19 @@ import java.util.List;
 public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long id;
 
+    @Column(unique = true)
     private String username;
+    @Column(unique = true)
     private String email;
     private String password;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="note_id", referencedColumnName = "user_id")
+    private List<Note> note;
+
     @Enumerated(value = EnumType.STRING)
     Role role;
 

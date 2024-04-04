@@ -1,6 +1,8 @@
 package org.example.notesappapi.service;
 
+import org.example.notesappapi.model.AppUser;
 import org.example.notesappapi.model.Note;
+import org.example.notesappapi.repository.AppUserRepository;
 import org.example.notesappapi.repository.NoteRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,25 +11,35 @@ import java.util.List;
 @Service
 public class NoteService {
     private final NoteRepository noteRepository;
+    private final AppUserRepository appUserRepository;
 
-    public NoteService(NoteRepository noteRepository) {
+    public NoteService(NoteRepository noteRepository, AppUserRepository appUserRepository) {
         this.noteRepository = noteRepository;
+        this.appUserRepository = appUserRepository;
     }
 
-    public boolean add(String title, String content) {
+    public boolean add(String title, String content, String username) {
         if (title == null || title.isEmpty() || content == null || content.isEmpty()) {
+            return false;
+        }
+        AppUser appUser = appUserRepository.findUserByUsername(username).orElse(null);
+        if (appUser == null) {
             return false;
         }
         Note note = new Note();
         note.setTitle(title);
         note.setContent(content);
+
+        appUser.getNote().add(note);
+        appUserRepository.save(appUser);
         noteRepository.save(note);
         return true;
     }
 
 
-    public List<Note> findAll() {
-        return noteRepository.findAll();
+    public List<Note> findAll(String username) {
+        AppUser appUser = appUserRepository.findUserByUsername(username).orElseThrow();
+        return appUser.getNote();
     }
 
     public Note findById(Long id) {
