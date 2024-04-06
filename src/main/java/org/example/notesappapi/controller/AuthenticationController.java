@@ -18,7 +18,7 @@ public class AuthenticationController {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/sign-up")
     public ResponseEntity<AuthenticationResponse> addUser(@RequestBody AppUser request) {
         return new ResponseEntity<>(authService.register(request), HttpStatus.OK);
     }

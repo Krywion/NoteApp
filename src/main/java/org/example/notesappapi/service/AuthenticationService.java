@@ -2,6 +2,7 @@ package org.example.notesappapi.service;
 
 import org.example.notesappapi.model.AppUser;
 import org.example.notesappapi.model.AuthenticationResponse;
+import org.example.notesappapi.model.Role;
 import org.example.notesappapi.repository.AppUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +31,12 @@ public class AuthenticationService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        user.setRole(request.getRole());
+        if(request.getRole() == null) {
+            user.setRole(Role.USER);
+        } else {
+            user.setRole(request.getRole());
+        }
+
 
         user = appUserRepository.save(user);
 
