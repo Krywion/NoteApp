@@ -17,7 +17,12 @@ export class NoteService {
 
   async getNotes() : Promise<Note[]>{
     console.log('Getting notes');
-    const response = await fetch(this.url + 'notes');
+    const response = await fetch(this.url + 'notes', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+      }
+    });
     console.log(response);
     const noteList = await response.json();
     console.log(noteList);
@@ -29,7 +34,8 @@ export class NoteService {
     const response = await fetch(this.url + 'add-note', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         title: title,
@@ -44,7 +50,8 @@ export class NoteService {
     const response = await fetch(this.url + 'update-note/' + id, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify({
         title: title,
