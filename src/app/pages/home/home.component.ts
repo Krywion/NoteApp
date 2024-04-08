@@ -21,9 +21,9 @@ export class HomeComponent {
   noteList: Note[] = [];
 
   constructor() {
-    this.noteService.getNotes().then((noteList: Note[]) => {
-      this.noteList = noteList;
-    })
-    console.log(this.noteList);
+    console.log('Home component created');
+    this.noteService.getNotes().subscribe((notes) => {
+      this.noteList = notes;
+    });
   }
 }

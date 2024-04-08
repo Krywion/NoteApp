@@ -1,12 +1,16 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Note} from "../model/note";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+
+const URL = 'http://localhost:8080/';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoteService {
 
-  url = 'http://localhost:8080/api/';
+  http = inject(HttpClient);
 
   constructor() { }
 
@@ -15,48 +19,26 @@ export class NoteService {
     this.addNote(title, content);
   }
 
-  async getNotes() : Promise<Note[]>{
+  getNotes(): Observable<Note[]>{
     console.log('Getting notes');
-    const response = await fetch(this.url + 'notes', {
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-      }
-    });
-    console.log(response);
-    const noteList = await response.json();
-    console.log(noteList);
-    return noteList;
+    return this.http.get<Note[]>(URL + 'api/get-notes');
   }
 
-  async addNote(title: string, content: string) {
-    console.log('Adding note');
-    const response = await fetch(this.url + 'add-note', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      },
-      body: JSON.stringify({
-        title: title,
-        content: content
-      })
+  addNote(title: string, content: string) {
+    this.http.post(URL + 'api/add-note', {
+      title: title,
+      content: content
+    }).subscribe((response) => {
+      console.log('Note added');
     });
-    console.log(response);
   }
 
-  async updateNote(id: string, title: string, content: string) {
-    console.log('Updating note');
-    const response = await fetch(this.url + 'update-note/' + id, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      },
-      body: JSON.stringify({
-        title: title,
-        content: content
-      })
+  updateNote(id: string, title: string, content: string) {
+    this.http.put(URL + 'api/update-note/' + id , {
+      title: title,
+      content: content
+    }).subscribe((response) => {
+      console.log('Note updated');
     });
   }
 }

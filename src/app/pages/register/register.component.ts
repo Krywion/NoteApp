@@ -1,57 +1,84 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {FormsModule, ReactiveFormsModule, Validators, FormBuilder} from "@angular/forms";
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+  FormGroup,
+  FormControl,
+  ValidationErrors,
+  ValidatorFn, AbstractControl
+} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit{
 
-  formBuilder: FormBuilder = inject(FormBuilder);
   authService: AuthService = inject(AuthService);
+
+  router = inject(Router);
+  applyForm!: FormGroup;
 
   constructor() {
 
   }
   ngOnInit() {
     console.log('RegisterComponent initialized');
-
+    this.applyForm = new FormGroup({
+      username: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]),
+      confirmPassword: new FormControl('', [Validators.required, this.confirmPasswordValidator]),
+      terms: new FormControl(false, Validators.requiredTrue)
+    });
   }
 
-  applyForm = this.formBuilder.group({
-    username: ['', Validators.required],
-    email: ['', Validators.required],
-    password: ['', Validators.required],
-    confirmPassword: ['', Validators.required]
-  });
+  redirectToLogin() {
+    console.log('Redirecting to login');
+    this.router.navigate(['/login']);
+  }
 
 
   register(username: string, email:string, password: string) {
-    console.log('Registering');
-    // Implement registration logic here
-    this.authService.register(username, email, password).then((response) => {
-      console.log(response);
+    this.authService.register(username, email, password).subscribe((result) => {
+      console.log('Registered: ' + result);
     });
   }
 
   submitForm() {
-    console.log(this.applyForm.value);
-    if(this.applyForm.value.password != this.applyForm.value.confirmPassword){
-      console.log('Passwords do not match');
-      this.applyForm.get('confirm-password')?.setErrors({passwordMismatch: true});
-      return;
+    if(this.applyForm.valid) {
+      console.log(this.applyForm.value);
+      this.register(
+        this.applyForm.value.username ?? '',
+        this.applyForm.value.email ?? '',
+        this.applyForm.value.password ?? ''
+      );
+    } else {
+      console.log('Invalid form');
+
     }
-    this.register(
-      this.applyForm.value.username ?? '',
-      this.applyForm.value.email ?? '',
-      this.applyForm.value.password ?? ''
-    );
+
+  }
+
+  confirmPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    if (control.parent) {
+      const password = control.parent.get('password')?.value;
+      const confirmPassword = control.value;
+      if (password !== confirmPassword) {
+        return {passwordMismatch: true};
+      }
+    }
+    return null;
   }
 }
