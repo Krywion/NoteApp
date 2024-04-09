@@ -1,5 +1,5 @@
 import {Injectable, inject} from '@angular/core';
-import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 
 
@@ -43,7 +43,17 @@ export class AuthService {
   register(username: string, email: string, password: string) {
     let user = {username, email, password};
     return this.http
-      .post(URL + 'sign-up', JSON.stringify(user), httpOptions);
+      .post(URL + 'sign-up', JSON.stringify(user), httpOptions)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let message = error.error;
+          if(error.status === 409) {
+            return throwError( () => new Error(message));
+          } else {
+            return throwError( () => new Error('Unknown error'));
+          }
+        }));
+
   }
 
   private doLoginUser(username: string, token: any) {

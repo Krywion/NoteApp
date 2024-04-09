@@ -50,6 +50,14 @@
           <div *ngIf="(applyForm.controls['terms'].touched || applyForm.controls['terms'].dirty ) && applyForm.controls['terms'].invalid">
             <p *ngIf="applyForm.controls['terms'].hasError('required')" class="text-red-500 dark:text-red-400">You must accept the terms and conditions</p>
           </div>
+
+          @if (errorMessage) {
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong class="font-bold">Error! </strong>
+              <span class="block sm:inline">{{ errorMessage }}</span>
+            </div>
+          }
+
           <button type="submit" [disabled]="applyForm.invalid" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
           <p class="text-sm font-light text-gray-500 dark:text-gray-400">
             Already have an account? <a (click)="redirectToLogin()" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>

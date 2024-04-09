@@ -32,18 +32,16 @@ export class LoginComponent implements OnInit{
   }
 
   login(username: string, password: string) {
-    this.AuthService.login(username, password).subscribe( (response) =>{
-      this.router.navigate(['/home']);
-    },
-      (error: any) => {
-        if(error instanceof Error) {
-          this.errorMessage = error.message;
-        } else {
-          this.errorMessage = 'Unknown error';
-        }
+    this.AuthService.login(username, password).subscribe( {
+      next: (result) => {
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
       }
-    );
+    });
   }
+
   submitForm() {
     console.log(this.applyForm.value);
     this.login(

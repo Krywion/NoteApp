@@ -26,6 +26,7 @@ import {CommonModule} from "@angular/common";
 export class RegisterComponent implements OnInit{
 
   authService: AuthService = inject(AuthService);
+  errorMessage?: string;
 
   router = inject(Router);
   applyForm!: FormGroup;
@@ -50,11 +51,20 @@ export class RegisterComponent implements OnInit{
   }
 
 
-  register(username: string, email:string, password: string) {
-    this.authService.register(username, email, password).subscribe((result) => {
-      console.log('Registered: ' + result);
+  register(username: string, email: string, password: string) {
+    this.authService.register(username, email, password).subscribe({
+      next: (result) => {
+        this.router.navigate(['/login']);
+      },
+      error: (error: any) => {
+        console.log(error.message);
+        this.errorMessage = error.message;
+      },
+      complete: () => {
+      }
     });
   }
+
 
   submitForm() {
     if(this.applyForm.valid) {
