@@ -20,7 +20,7 @@ public class NoteController {
         this.noteService = noteService;
     }
 
-    @GetMapping("/notes")
+    @GetMapping("/get-notes")
     public ResponseEntity<List<Note>> getNotes(Principal principal) {
         return new ResponseEntity<>(noteService.findAll(principal.getName()), HttpStatus.OK);
     }

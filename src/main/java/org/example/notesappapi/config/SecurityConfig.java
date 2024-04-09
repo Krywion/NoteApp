@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> registry.requestMatchers("/sign-in/**", "/sign-up/**")
                         .permitAll()
                         .requestMatchers("/api/**").hasAnyAuthority("USER")
+                        .requestMatchers("/auth/**").hasAnyAuthority("USER")
                         .anyRequest()
                         .authenticated())
                 .userDetailsService(userDetailService)

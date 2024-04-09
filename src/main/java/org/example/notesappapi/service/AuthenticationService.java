@@ -1,5 +1,7 @@
 package org.example.notesappapi.service;
 
+import org.example.notesappapi.exception.EmailExistsException;
+import org.example.notesappapi.exception.UsernameExistsException;
 import org.example.notesappapi.model.AppUser;
 import org.example.notesappapi.model.AuthenticationResponse;
 import org.example.notesappapi.model.Role;
@@ -8,6 +10,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 
 @Service
 public class AuthenticationService {
@@ -25,7 +29,16 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationResponse register(AppUser request) {
+    public AuthenticationResponse register(AppUser request) throws UsernameExistsException, EmailExistsException {
+
+        if(appUserRepository.findUserByUsername(request.getUsername()).isPresent()) {
+            throw new UsernameExistsException();
+        }
+
+        if(appUserRepository.findUserByEmail(request.getEmail()).isPresent()) {
+            throw new EmailExistsException();
+        }
+
         AppUser user = new AppUser();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
@@ -57,5 +70,9 @@ public class AuthenticationService {
         String token = jwtService.generateToken(user);
 
         return new AuthenticationResponse(token);
+    }
+
+    public String getAuthenticatedUser(Principal principal) {
+        return principal.getName();
     }
 }
