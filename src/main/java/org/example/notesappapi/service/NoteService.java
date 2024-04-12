@@ -30,7 +30,7 @@ public class NoteService {
         note.setTitle(title);
         note.setContent(content);
 
-        appUser.getNote().add(note);
+        appUser.getNotes().add(note);
         appUserRepository.save(appUser);
         noteRepository.save(note);
         return true;
@@ -39,7 +39,7 @@ public class NoteService {
 
     public List<Note> findAll(String username) {
         AppUser appUser = appUserRepository.findUserByUsername(username).orElseThrow();
-        return appUser.getNote();
+        return appUser.getNotes();
     }
 
     public Note findById(Long id) {

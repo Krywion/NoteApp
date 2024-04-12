@@ -22,10 +22,12 @@ public class AppUser implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
+    private boolean enabled;
+    private String verificationCode;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="note_id", referencedColumnName = "user_id")
-    private List<Note> note;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private List<Note> notes;
 
     @Enumerated(value = EnumType.STRING)
     Role role;
@@ -56,6 +58,6 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 }

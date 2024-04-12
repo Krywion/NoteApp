@@ -7,10 +7,7 @@ import org.example.notesappapi.model.AuthenticationResponse;
 import org.example.notesappapi.service.AuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -45,6 +42,13 @@ public class AuthenticationController {
     @GetMapping("/auth/me")
     public ResponseEntity<String> getAuthenticatedUser(Principal principal) {
         return new ResponseEntity<>(authService.getAuthenticatedUser(principal), HttpStatus.OK);
+    }
+
+    // http://localhost:8080/verify?code=b5e9ed38-3316-4f84-a9f4-5eb9bea24e2a
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyUser(@RequestParam("code") String code) {
+        System.out.println(code);
+        return new ResponseEntity<>(authService.verifyUser(code), HttpStatus.OK);
     }
 
 }

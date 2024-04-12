@@ -34,7 +34,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(registry -> registry.requestMatchers("/sign-in/**", "/sign-up/**")
+                .authorizeHttpRequests(registry -> registry.requestMatchers("/sign-in/**", "/sign-up/**", "/verify/**")
                         .permitAll()
                         .requestMatchers("/api/**").hasAnyAuthority("USER")
                         .requestMatchers("/auth/**").hasAnyAuthority("USER")
