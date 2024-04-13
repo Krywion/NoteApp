@@ -1,4 +1,4 @@
-FROM node:18.17.1-alpine as build
+FROM node:18.17.1-alpine AS build
 
 WORKDIR /app
 
@@ -8,7 +8,6 @@ RUN npx ngcc --properties es2023 browser module main --first-only --create-ivy-e
 COPY . .
 RUN npm run build
 
-FROM nginx:stable
-COPY --from=build /app/dist/note-app /usr/share/nginx/html
+FROM nginx
+COPY --from=build /app/dist/note-app/browser /usr/share/nginx/html
 EXPOSE 80
-

@@ -1,12 +1,12 @@
 services:
   noteApp:
-    container_name: noteApp
+    container_name: noteapp
     build: .
     image: noteapp:v1
     ports:
-      - "80:80"
+      - 8050:80
     expose:
-      - "80"
+      - 80
     networks:
       - internalnet
 
