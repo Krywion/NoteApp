@@ -1,9 +1,10 @@
 import {Injectable, inject} from '@angular/core';
 import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 
-const URL = 'http://localhost:8080/';
+
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -16,6 +17,7 @@ const httpOptions = {
 })
 export class AuthService {
 
+  private readonly URL = environment.API_BASE_URL;
   private readonly JWT_TOKEN: string = 'JWT_TOKEN';
   private loggedUser?: string;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
@@ -26,7 +28,7 @@ export class AuthService {
   login(username: string, password: string) {
     let user = {username, password};
     return this.http
-      .post(URL + 'sign-in', JSON.stringify(user), httpOptions)
+      .post(this.URL + 'sign-in', JSON.stringify(user), httpOptions)
       .pipe(
         tap((data: any) => {
         this.doLoginUser(username, data.token);
@@ -43,7 +45,7 @@ export class AuthService {
   register(username: string, email: string, password: string) {
     let user = {username, email, password};
     return this.http
-      .post(URL + 'sign-up', JSON.stringify(user), httpOptions)
+      .post(this.URL + 'sign-up', JSON.stringify(user), httpOptions)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           let message = error.error;
@@ -84,7 +86,7 @@ export class AuthService {
     });
   }
   getCurrentAuthUser() {
-      return this.http.get(URL + 'auth/me', {
+      return this.http.get(this.URL + 'auth/me', {
       });
   }
 }

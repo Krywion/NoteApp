@@ -2,13 +2,14 @@ import {inject, Injectable} from '@angular/core';
 import {Note} from "../model/note";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-
-const URL = 'http://localhost:8080/';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoteService {
+
+  private readonly URL = environment.API_BASE_URL;
 
   http = inject(HttpClient);
 
@@ -21,11 +22,11 @@ export class NoteService {
 
   getNotes(): Observable<Note[]>{
     console.log('Getting notes');
-    return this.http.get<Note[]>(URL + 'api/get-notes');
+    return this.http.get<Note[]>(this.URL + 'api/get-notes');
   }
 
   addNote(title: string, content: string) {
-    this.http.post(URL + 'api/add-note', {
+    this.http.post(this.URL + 'api/add-note', {
       title: title,
       content: content
     }).subscribe((response) => {
@@ -34,7 +35,7 @@ export class NoteService {
   }
 
   updateNote(id: string, title: string, content: string) {
-    this.http.put(URL + 'api/update-note/' + id , {
+    this.http.put(this.URL + 'api/update-note/' + id , {
       title: title,
       content: content
     }).subscribe((response) => {
@@ -44,7 +45,7 @@ export class NoteService {
 
   deleteNote(id: string) {
     console.log('Deleting note' + id);
-    this.http.delete(URL + 'api/delete-note/' + id).subscribe( {
+    this.http.delete(this.URL + 'api/delete-note/' + id).subscribe( {
       next: (result) => {
         console.log('Note deleted');
       },

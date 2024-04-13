@@ -1,10 +1,10 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {HomeComponent} from "./pages/home/home.component";
 import {HeaderComponent} from "./components/header/header.component";
 import {NoteFormComponent} from "./pages/note-form/note-form.component";
 import {FooterComponent} from "./components/footer/footer.component";
-import {initFlowbite} from "flowbite";
+
 
 
 @Component({
@@ -17,13 +17,7 @@ import {initFlowbite} from "flowbite";
 export class AppComponent implements OnInit{
   title = 'NoteApp';
 
-  private router: Router = inject(Router);
 
   ngOnInit(): void {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        initFlowbite();
-      }
-    });
   }
 }
