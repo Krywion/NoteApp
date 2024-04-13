@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import { FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {NoteService} from "../../services/note.service";
 
@@ -15,6 +15,9 @@ import {NoteService} from "../../services/note.service";
   styleUrl: './note-form.component.css'
 })
 export class NoteFormComponent {
+
+  router: Router = inject(Router);
+
   applyForm = new FormGroup({
     title: new FormControl(''),
     content: new FormControl('')
@@ -31,6 +34,8 @@ export class NoteFormComponent {
       this.applyForm.value.title ?? '',
       this.applyForm.value.content ?? ''
     );
+
+    this.router.navigate(['/home']);
   }
 
 }

@@ -1,37 +1,45 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input, OnInit, TemplateRef} from '@angular/core';
 import {Note} from "../../model/note";
-import {EditFormComponent} from "../edit-form/edit-form.component";
-import {MatDialog} from "@angular/material/dialog";
 import {MatButton} from "@angular/material/button";
+import {NoteService} from "../../services/note.service";
+import {ReactiveFormsModule} from "@angular/forms";
+import {ModalService} from "../../services/modal.service";
+import {EditNoteModalComponent} from "../edit-note-modal/edit-note-modal.component";
 
 @Component({
   selector: 'app-note-card',
   standalone: true,
   imports: [
-    EditFormComponent,
-    MatButton
+    MatButton,
+    ReactiveFormsModule
   ],
   templateUrl: './note-card.component.html',
   styleUrl: './note-card.component.css'
 })
-export class NoteCardComponent {
+export class NoteCardComponent implements OnInit{
   @Input() note: Note | undefined;
-  protected readonly Note = Note;
 
-  constructor(public dialog: MatDialog) {
+  private noteService: NoteService = inject(NoteService);
+  private modalService: any = inject(ModalService);
+
+  constructor() {
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(EditFormComponent, {
-      data: {note: this.note},
-      panelClass: 'custom-dialog-container'
-    });
+  ngOnInit(): void {
+  }
 
-    console.log('Dialog opened');
-    console.log(this.note);
 
-    dialogRef.afterClosed().subscribe((result: any) => {
-      console.log(`Dialog result: ${result}`);
-    });
+  deleteNote() {
+    this.noteService.deleteNote(this.note?.id ?? '');
+    window.location.reload();
+  }
+
+
+  openModal(modalTemplate: TemplateRef<any>) {
+    this.modalService
+      .open(EditNoteModalComponent, modalTemplate, {size: 'lg', title: 'Edit Note', data: this.note})
+      .subscribe((action: any) => {
+        console.log('modalAction', action);
+      });
   }
 }

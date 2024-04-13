@@ -1,12 +1,18 @@
 <div class="border border-gray-700 border-opacity-75 p-6 rounded-lg relative">
   <div class="absolute top-2 right-2">
     <!-- Przycisk edycji -->
-    <button class="text-blue-500 hover:text-blue-700 ml-2" (click)="openDialog()" >
+    <button (click)="openModal(modalTemplate)" class="text-blue-500 hover:text-blue-700 ml-2">
       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 24 24">
       <path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l11.228-11.225-5.69-5.692-11.227 11.227 5.689 5.69zm9.768-21.148l-2.816 2.817 5.691 5.691 2.816-2.819-5.691-5.689z"/></svg>
     </button>
+
+    <ng-template #modalTemplate>
+      <div>This is our custom modal content</div>
+    </ng-template>
+
+
     <!-- Przycisk usuwania -->
-    <button class="text-red-500 hover:text-red-700 ml-1">
+    <button class="text-red-500 hover:text-red-700 ml-1" (click)="deleteNote()" >
       <img width="20" height="20" src="assets/icons/X_icon.svg" alt="x_icon">
     </button>
   </div>

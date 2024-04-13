@@ -41,4 +41,16 @@ export class NoteService {
       console.log('Note updated');
     });
   }
+
+  deleteNote(id: string) {
+    console.log('Deleting note' + id);
+    this.http.delete(URL + 'api/delete-note/' + id).subscribe( {
+      next: (result) => {
+        console.log('Note deleted');
+      },
+      error: (error) => {
+        console.log('Error deleting note');
+      }
+    });
+  }
 }

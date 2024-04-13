@@ -3,56 +3,5 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-dialog-container {
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  background-color: rgb(17, 24, 39);
-  max-width: 300px;
-  max-height: 600px;
-  overflow: hidden;
-  color: rgb(229 231 235);
-  border-radius: 20px;
-
-  .dialog-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .dialog-body {
-    margin-bottom: 20px;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 10px;
-  }
-
-  input {
-    background-color: rgb(17, 24, 39);
-    color: rgb(229 231 235);
-    border: 1px solid rgb(229 231 235);
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-
-  textarea {
-    background-color: rgb(17, 24, 39);
-    color: rgb(229 231 235);
-    border: 1px solid rgb(229 231 235);
-    padding: 10px;
-    margin-bottom: 20px;
-    width: 100%;
-  }
-
-  .dialog-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    border-radius: 20px;
-  }
-}
 
 
