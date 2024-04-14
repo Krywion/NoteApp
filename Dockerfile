@@ -9,5 +9,6 @@ COPY . .
 RUN npm run build
 
 FROM nginx
+COPY default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/note-app/browser /usr/share/nginx/html
 EXPOSE 80
