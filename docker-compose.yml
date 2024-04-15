@@ -4,7 +4,7 @@ services:
     build: .
     image: noteapp:v1
     ports:
-      - 8050:80
+      - 4200:80
     expose:
       - 80
     networks:

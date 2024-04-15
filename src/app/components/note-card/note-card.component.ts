@@ -1,10 +1,22 @@
-import {Component, inject, Input, OnInit, TemplateRef} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Inject,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef
+} from '@angular/core';
 import {Note} from "../../model/note";
 import {MatButton} from "@angular/material/button";
 import {NoteService} from "../../services/note.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ModalService} from "../../services/modal.service";
 import {EditNoteModalComponent} from "../edit-note-modal/edit-note-modal.component";
+import {Location} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-note-card',
@@ -18,6 +30,8 @@ import {EditNoteModalComponent} from "../edit-note-modal/edit-note-modal.compone
 })
 export class NoteCardComponent implements OnInit{
   @Input() note: Note | undefined;
+  @Output() noteDeleted: EventEmitter<any> = new EventEmitter();
+
 
   private noteService: NoteService = inject(NoteService);
   private modalService: any = inject(ModalService);
@@ -30,8 +44,7 @@ export class NoteCardComponent implements OnInit{
 
 
   deleteNote() {
-    this.noteService.deleteNote(this.note?.id ?? '');
-    window.location.reload();
+    this.noteDeleted.emit(this.note)
   }
 
 

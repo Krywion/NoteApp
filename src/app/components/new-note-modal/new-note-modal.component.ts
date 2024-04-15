@@ -16,6 +16,7 @@ export class NewNoteModalComponent {
   @Output() closeEvent = new EventEmitter();
   @Output() submitEvent = new EventEmitter();
 
+
   applyForm: FormGroup;
 
   constructor(private elementRef: ElementRef,
@@ -26,7 +27,9 @@ export class NewNoteModalComponent {
         content: new FormControl('', [Validators.required]),
       }
     );
+
   }
+
 
   close(): void {
     this.elementRef.nativeElement.remove();
@@ -37,11 +40,12 @@ export class NewNoteModalComponent {
     this.noteService.addNote(
       this.applyForm.value.title ?? '',
       this.applyForm.value.content ?? ''
-    );
+    ).then(() => {
+      window.location.reload();
+    });
 
     this.elementRef.nativeElement.remove();
-    this.submitEvent.emit();
 
-    window.location.reload();
   }
+
 }

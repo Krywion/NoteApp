@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NoteService} from "../../services/note.service";
 import {Note} from "../../model/note";
@@ -25,7 +25,8 @@ export class EditNoteModalComponent implements OnInit{
   applyForm!: FormGroup;
 
   constructor(private elementRef: ElementRef,
-              private noteService: NoteService) {
+              private noteService: NoteService,
+              private changeDetectorRef: ChangeDetectorRef) {
 
   }
 
@@ -49,11 +50,12 @@ export class EditNoteModalComponent implements OnInit{
       this.note?.id ?? '',
       this.applyForm.value.title ?? '',
       this.applyForm.value.content ?? ''
-    )
+    ).then(() => {
+      window.location.reload();
+    });
 
     this.elementRef.nativeElement.remove();
     this.submitEvent.emit();
 
-    window.location.reload();
   }
 }
