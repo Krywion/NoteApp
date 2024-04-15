@@ -21,11 +21,11 @@ yarn-error.log
 *.sublime-workspace
 
 # Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+NoteApp/.vscode/*
+!NoteApp/.vscode/settings.json
+!NoteApp/.vscode/tasks.json
+!NoteApp/.vscode/launch.json
+!NoteApp/.vscode/extensions.json
 .history/*
 
 # Miscellaneous
@@ -37,6 +37,7 @@ yarn-error.log
 testem.log
 /typings
 
+.env
 # System files
 .DS_Store
 Thumbs.db
