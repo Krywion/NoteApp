@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NoteService} from "../../services/note.service";
 import {Note} from "../../model/note";
@@ -25,8 +25,7 @@ export class EditNoteModalComponent implements OnInit{
   applyForm!: FormGroup;
 
   constructor(private elementRef: ElementRef,
-              private noteService: NoteService,
-              private changeDetectorRef: ChangeDetectorRef) {
+              private noteService: NoteService) {
 
   }
 

@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, inject, OnChanges, OnInit, SimpleChanges, TemplateRef} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit, TemplateRef} from '@angular/core';
 import {NoteCardComponent} from "../../components/note-card/note-card.component";
-import {Router, RouterLink} from "@angular/router";
+import {RouterLink} from "@angular/router";
 import {Note} from "../../model/note";
 import {NoteService} from "../../services/note.service";
 import {ModalService} from "../../services/modal.service";
@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit{
   private noteService: NoteService = inject(NoteService);
   private modalService: any = inject(ModalService);
   noteList!: Note[];
-  private router: Router = inject(Router);
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {
     console.log('Home component created');
