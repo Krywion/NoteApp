@@ -28,8 +28,10 @@ public class NoteController {
     @PostMapping("/add-note")
     public ResponseEntity<String> addNote(@RequestBody Map<String, String> noteData, Principal principal) {
         if (noteService.add(noteData.get("title"), noteData.get("content"), principal.getName())) {
+            System.out.println("Added note to user: " + principal.getName());
             return new ResponseEntity<>("Note added successfully to user: " + principal.getName() , HttpStatus.CREATED);
         } else {
+            System.out.println("Error with adding note");
             return new ResponseEntity<>("Error adding note", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

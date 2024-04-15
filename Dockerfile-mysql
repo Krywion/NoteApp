@@ -1,0 +1,7 @@
+FROM mysql
+
+COPY my.conf .
+
+COPY my.conf /etc/mysql/conf.d
+
+EXPOSE 3307
