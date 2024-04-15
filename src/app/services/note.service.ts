@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Note} from "../model/note";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
@@ -10,10 +10,7 @@ import {environment} from "../../environments/environment";
 export class NoteService {
 
   private readonly URL = environment.API_BASE_URL;
-
-  http = inject(HttpClient);
-
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getNotes(): Observable<Note[]>{
     console.log('Getting notes');
