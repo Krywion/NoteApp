@@ -2,8 +2,7 @@ version: "3.8"
 
 services:
   mysql:
-    build:
-      dockerfile: Dockerfile-mysql
+    image: krywion/noteapp-mysql:latest
     restart: unless-stopped
     env_file: .env
     environment:
@@ -12,8 +11,7 @@ services:
     ports:
       - 3307:3306
   server:
-    build:
-      dockerfile: Dockerfile-spring
+    image: krywion/noteappserver:latest
     depends_on:
       - mysql
     restart: on-failure
@@ -44,9 +42,7 @@ services:
     tty: true
   noteApp:
     container_name: noteapp
-    build:
-      dockerfile: Dockerfile-angular
-    image: noteapp:v1
+    image: krywion/noteapp:latest
     ports:
       - 4200:80
     expose:

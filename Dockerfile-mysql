@@ -1,6 +1,5 @@
 FROM mysql
 
-COPY NotesAppServer/my.conf .
 COPY NotesAppServer/my.conf /etc/mysql/conf.d
 
 EXPOSE 3307

@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  mysql:
+    container_name: noteapp-mysql
+    image: krywion/noteapp-mysql:latest
+    build:
+      dockerfile: Dockerfile-mysql
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - 3307:3306
+  server:
+    container_name: noteapp-server
+    image: krywion/noteapp-server:latest
+    build:
+      dockerfile: Dockerfile-spring
+    depends_on:
+      - mysql
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_APPLICATION_NAME=NotesAppApi
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/$MYSQLDB_DATABASE?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true
+      - SPRING_DATASOURCE_USERNAME=$MYSQLDB_USER
+      - SPRING_DATASOURCE_PASSWORD=$MYSQLDB_PASSWORD
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
+      - SPRING_JPA_DATABASE=mysql
+      - SPRING_JPA_DATABASE-PLATFORM=org.hibernate.dialect.MySQLDialect
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=$MAIL_USERNAME
+      - SPRING_MAIL_PASSWORD=$MAIL_PASSWORD
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  noteApp:
+    container_name: noteapp-client
+    build:
+      dockerfile: Dockerfile-angular
+    image: krywion/noteapp-client:latest
+    ports:
+      - 4200:80
+    expose:
+      - 80
+    networks:
+      - internalnet
+    depends_on:
+      - server
+
+networks:
+  internalnet:
+    driver: bridge
