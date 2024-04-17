@@ -27,6 +27,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     let user = {username, password};
+    localStorage.removeItem(this.JWT_TOKEN);
     return this.http
       .post(this.URL + 'sign-in', JSON.stringify(user), httpOptions)
       .pipe(
@@ -43,6 +44,7 @@ export class AuthService {
   }
 
   register(username: string, email: string, password: string) {
+    localStorage.removeItem(this.JWT_TOKEN);
     let user = {username, email, password};
     return this.http
       .post(this.URL + 'sign-up', JSON.stringify(user), httpOptions)
