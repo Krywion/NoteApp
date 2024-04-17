@@ -1,6 +1,7 @@
 package org.example.notesappapi.config;
 
 import org.example.notesappapi.filter.JwtAuthenticationFilter;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,8 +35,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(registry -> registry.requestMatchers("/sign-in/**", "/sign-up/**", "/verify/**")
-                        .permitAll()
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/sign-in/**", "/sign-up/**", "/verify/**").permitAll()
                         .requestMatchers("/api/**").hasAnyAuthority("USER")
                         .requestMatchers("/auth/**").hasAnyAuthority("USER")
                         .anyRequest()

@@ -1,5 +1,6 @@
 package org.example.notesappapi.service;
 
+import org.example.notesappapi.config.WebConfig;
 import org.example.notesappapi.exception.EmailExistsException;
 import org.example.notesappapi.exception.UsernameExistsException;
 import org.example.notesappapi.model.AppUser;
@@ -28,7 +29,8 @@ public class AuthenticationService {
                                  PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
                                  AuthenticationManager authenticationManager,
-                                 MailService mailService) {
+                                 MailService mailService,
+                                 WebConfig webConfig) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -63,10 +65,10 @@ public class AuthenticationService {
 
         String to = user.getEmail();
         String subject = "Verify your email address";
+        String href = WebConfig.API_BASE_PATH + "/verify?code=" + user.getVerificationCode();
         String message = "<h1>Notes App</h1><br>" +
                 "<p>Click the link below to verify your email address</p><br>" +
-                "<a href='http://localhost:8080/verify?code=" + user.getVerificationCode() +
-                "'>Verify Email</a>";
+                "<a href='" + href + "'>Verify Email</a>";
 
         mailService.sendMail(to, subject, message);
 
