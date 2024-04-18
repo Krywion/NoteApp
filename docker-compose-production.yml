@@ -1,7 +1,8 @@
 version: "3.8"
 
 services:
-  mysql:
+  noteapp-mysql:
+    container_name: noteapp-mysql
     image: krywion/noteapp-mysql:latest
     restart: unless-stopped
     env_file: .env
@@ -9,12 +10,15 @@ services:
       - MYSQL_ROOT_PASSWORD=$MYSQLDB_PASSWORD
       - MYSQL_DATABASE=$MYSQLDB_DATABASE
     ports:
-      - 3307:3306
-  server:
-    image: krywion/noteappserver:latest
+      - 3306:3306
+    networks:
+        - my-network
+  noteapp-server:
+    container_name: noteapp-server
+    image: krywion/noteapp-server:latest
     depends_on:
-      - mysql
-    restart: on-failure
+      - noteapp-mysql
+    restart: no
     env_file:
       - .env
     ports:
@@ -23,7 +27,7 @@ services:
       - SPRING_APPLICATION_NAME=NotesAppApi
       - SPRING_JPA_SHOW_SQL=true
       - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/$MYSQLDB_DATABASE?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://noteapp-mysql:3306/$MYSQLDB_DATABASE?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true
       - SPRING_DATASOURCE_USERNAME=$MYSQLDB_USER
       - SPRING_DATASOURCE_PASSWORD=$MYSQLDB_PASSWORD
       - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
@@ -41,18 +45,17 @@ services:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
-  noteApp:
-    container_name: noteapp
-    image: krywion/noteapp:latest
+    networks:
+        - my-network
+  noteapp-client:
+    container_name: noteapp-client
+    image: krywion/noteapp-client:latest
     ports:
       - 4200:80
-    expose:
-      - 80
-    networks:
-      - internalnet
     depends_on:
-      - server
-
+      - noteapp-server
+    networks:
+      - my-network
 networks:
-  internalnet:
+  my-network:
     driver: bridge
