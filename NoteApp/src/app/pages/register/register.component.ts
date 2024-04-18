@@ -27,6 +27,7 @@ export class RegisterComponent implements OnInit{
 
   authService: AuthService = inject(AuthService);
   errorMessage?: string;
+  successMessage?: string;
 
   router = inject(Router);
   applyForm!: FormGroup;
@@ -54,7 +55,7 @@ export class RegisterComponent implements OnInit{
   register(username: string, email: string, password: string) {
     this.authService.register(username, email, password).subscribe({
       next: (result) => {
-        this.router.navigate(['/verify']);
+        this.successMessage = "Check your email to verify your account.";
       },
       error: (error: any) => {
         console.log(error.message);

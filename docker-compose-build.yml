@@ -46,7 +46,9 @@ services:
       - SPRING_MAIL_PASSWORD=$MAIL_PASSWORD
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
-      - API_BASE_PATH=$API_BASE_PATH
+      - API_BASE_PATH=http://krywion.pl:8080
+      - JWT_SECRET=$JWT_SECRET
+      - REDIRECT_URL=http://krywion.pl
     volumes:
       - .m2:/root/.m2
     stdin_open: true

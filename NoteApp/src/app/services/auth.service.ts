@@ -48,7 +48,10 @@ export class AuthService {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           let message = error.error;
-          if(error.status === 409) {
+          if(error.status === 201) {
+            return throwError( () => new Error('User created successfully'));
+          }
+          else if(error.status === 409) {
             return throwError( () => new Error(message));
           } else {
             return throwError( () => new Error('Unknown error'));
