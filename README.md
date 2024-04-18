@@ -21,6 +21,10 @@ then you have to create .env file and specify enviroment variables described in 
 to run project run
 $ docker-compose -f docker-compose-production.yml up -d
 
+### Deployment
+
+Project is deployed on the aws structure inside the EC2
+
 ### Demo
 
 Live demo of project
