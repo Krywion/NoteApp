@@ -46,15 +46,15 @@ export class RegisterComponent implements OnInit{
   }
 
   redirectToLogin() {
-    console.log('Redirecting to login');
-    this.router.navigate(['/login']);
+    console.log('Redirecting to verify');
+    this.router.navigate(['/verify']);
   }
 
 
   register(username: string, email: string, password: string) {
     this.authService.register(username, email, password).subscribe({
       next: (result) => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/verify']);
       },
       error: (error: any) => {
         console.log(error.message);

@@ -7,6 +7,7 @@ import org.example.notesappapi.model.AppUser;
 import org.example.notesappapi.model.AuthenticationResponse;
 import org.example.notesappapi.model.Role;
 import org.example.notesappapi.repository.AppUserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,12 +26,14 @@ public class AuthenticationService {
 
     private final MailService mailService;
 
+    @Value("${api.base.path}")
+    private String API_BASE_PATH;
+
     public AuthenticationService(AppUserRepository appUserRepository,
                                  PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
                                  AuthenticationManager authenticationManager,
-                                 MailService mailService,
-                                 WebConfig webConfig) {
+                                 MailService mailService) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -65,7 +68,7 @@ public class AuthenticationService {
 
         String to = user.getEmail();
         String subject = "Verify your email address";
-        String href = WebConfig.API_BASE_PATH + "/verify?code=" + user.getVerificationCode();
+        String href = API_BASE_PATH + "/verify?code=" + user.getVerificationCode();
         String message = "<h1>Notes App</h1><br>" +
                 "<p>Click the link below to verify your email address</p><br>" +
                 "<a href='" + href + "'>Verify Email</a>";

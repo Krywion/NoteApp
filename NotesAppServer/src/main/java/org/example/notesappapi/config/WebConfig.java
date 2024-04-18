@@ -8,8 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${api.base.path}")
-    public static final String API_BASE_PATH = "/api";
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

@@ -5,6 +5,7 @@ import {Note} from "../../model/note";
 import {NoteService} from "../../services/note.service";
 import {ModalService} from "../../services/modal.service";
 import {NewNoteModalComponent} from "../../components/new-note-modal/new-note-modal.component";
+import {AuthService} from "../../services/auth.service";
 
 
 @Component({
@@ -20,7 +21,9 @@ import {NewNoteModalComponent} from "../../components/new-note-modal/new-note-mo
 export class HomeComponent implements OnInit{
   private noteService: NoteService = inject(NoteService);
   private modalService: any = inject(ModalService);
+  private authService: any = inject(AuthService);
   noteList!: Note[];
+  isAuth: boolean = false;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {
     console.log('Home component created');
@@ -29,6 +32,12 @@ export class HomeComponent implements OnInit{
   ngOnInit() {
     this.loadNotes();
     this.changeDetectorRef.markForCheck();
+    this.authService.isAuthenticated().then(
+      (auth: boolean) => {
+        this.isAuth = auth;
+      }
+    );
+    console.log('isAuth', this.isAuth);
   }
 
   loadNotes() {
