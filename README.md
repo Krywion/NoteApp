@@ -21,4 +21,8 @@ then you have to create .env file and specify enviroment variables described in 
 to run project run
 $ docker-compose -f docker-compose-production.yml up -d
 
+### Demo
+
+Live demo of project
+http://www.krywion.pl/home
 
