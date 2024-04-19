@@ -10,6 +10,8 @@ Technology used:
   * Typescript
   * Spring boot
   * Angular
+  * MySQL
+  * Docker (deployment)
 
 Backend server authorizies api requests with JWT token that have a subject of authenticated user
 
