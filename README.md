@@ -20,8 +20,6 @@ https://docs.docker.com/desktop/
 
 then you have to create .env file and specify enviroment variables described in .env-template file
 
-
-
 to start project run
 $ docker-compose -f docker-compose-production.yml up -d
 
@@ -31,6 +29,6 @@ Project is deployed on the aws structure inside the EC2
 
 ### Demo
 
-Live demo of project
+Live demo of the project
 http://www.krywion.pl/home
 
