@@ -1,10 +1,10 @@
-<section class="text-gray-400 body-font bg-gray-900 min-h-screen">
+<section class="text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-900 body-font min-h-screen">
   @if (isAuth) {
     @if (noteList.length === 0) {
       <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
         <div class="text-center lg:w-2/3 w-full">
-          <h1 class="title-font> text-2xl mb-4 font-medium text-white">No notes found</h1>
-          <p class="mb-8 leading-relaxed">You can create a new note by clicking the button below</p>
+          <h1 class="title-font> text-2xl mb-4 font-medium">No notes found</h1>
+          <p class="mb-8 leading-relaxed text-gray-700 dark:text-gray-200">You can create a new note by clicking the button below</p>
         </div>
       </div>
     }
@@ -17,8 +17,8 @@
   } @else {
     <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
       <div class="text-center lg:w-2/3 w-full">
-        <h1 class="title-font> text-2xl mb-4 font-medium text-white">You are not logged in</h1>
-        <p class="mb-8 leading-relaxed">Please log in to see your notes</p>
+        <h1 class="title-font> text-2xl mb-4 font-medium">You are not logged in</h1>
+        <p class="mb-8 leading-relaxed text-gray-700 dark:text-gray-200">Please log in to see your notes</p>
       </div>
     </div>
   }
